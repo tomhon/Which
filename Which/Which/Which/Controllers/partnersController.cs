@@ -35,6 +35,21 @@ namespace Which.Controllers
             return View(partner);
         }
 
+        // GET: partners/Query - pass Partner name to get TE & BE back
+        public ActionResult Query(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            partner partner = db.partners.Find(id);
+            if (partner == null)
+            {
+                return HttpNotFound();
+            }
+            return View(partner);
+        }
+
         // GET: partners/Create
         public ActionResult Create()
         {

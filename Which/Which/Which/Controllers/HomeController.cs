@@ -8,6 +8,14 @@ namespace Which.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult Which()
+        {
+            ViewBag.Message = "This is the Which View";
+
+
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -15,14 +23,14 @@ namespace Which.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "This is a prototype application for Which TE owns which account?";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "My contact page.";
 
             return View();
         }
