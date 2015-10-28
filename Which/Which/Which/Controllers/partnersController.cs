@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -35,19 +36,55 @@ namespace Which.Controllers
             return View(partner);
         }
 
+
+        // Summary:
+        //     Creates a raw SQL query that will return entities in this set. By default, the
+        //     entities returned are tracked by the context; this can be changed by calling
+        //     AsNoTracking on the System.Data.Entity.Infrastructure.DbSqlQuery`1 returned.
+        //     Note that the entities returned are always of the type for this set and never
+        //     of a derived type. If the table or tables queried may contain data for other
+        //     entity types, then the SQL query must be written appropriately to ensure that
+        //     only entities of the correct type are returned. As with any API that accepts
+        //     SQL it is important to parameterize any user input to protect against a SQL injection
+        //     attack. You can include parameter place holders in the SQL query string and then
+        //     supply parameter values as additional arguments. Any parameter values you supply
+        //     will automatically be converted to a DbParameter. context.Blogs.SqlQuery("SELECT
+        //     * FROM dbo.Posts WHERE Author = @p0", userSuppliedAuthor); Alternatively, you
+        //     can also construct a DbParameter and supply it to SqlQuery. This allows you to
+        //     use named parameters in the SQL query string. context.Blogs.SqlQuery("SELECT
+        //     * FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));
+        //
+        // Parameters:
+        //   sql:
+        //     The SQL query string.
+        //
+        //   parameters:
+        //     The parameters to apply to the SQL query string. If output parameters are used,
+        //     their values will not be available until the results have been read completely.
+        //     This is due to the underlying behavior of DbDataReader, see http://go.microsoft.com/fwlink/?LinkID=398589
+        //     for more details.
+        //
+        // Returns:
+        //     A System.Data.Entity.Infrastructure.DbSqlQuery`1 object that will execute the
+        //     query when it is enumerated.
+
+
+        //public virtual DbSqlQuery<TEntity> SqlQuery(string sql, params object[] parameters);
+
         // GET: partners/Query - pass Partner name to get TE & BE back
-        public ActionResult Query(string? Name)
+        public ActionResult Query(string partnerName)
         {
-            if (id == null)
+            if (partnerName == "")
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            partner partner = db.partners.Find(Name);
-            if (partner == null)
+            //partner partner = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName");
+            var queryDetails = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToList();
+            if (queryDetails == null)
             {
                 return HttpNotFound();
             }
-            return View(partner);
+            return View(queryDetails);
         }
 
         // GET: partners/Create
