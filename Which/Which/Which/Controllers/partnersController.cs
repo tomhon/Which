@@ -74,17 +74,22 @@ namespace Which.Controllers
         // GET: partners/Query - pass Partner name to get TE & BE back
         public ActionResult Query(string partnerName)
         {
-            if (partnerName == "")
+            partnerName = "Amazon";
+            if (String.IsNullOrEmpty(partnerName))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //partner partner = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName");
-            var queryDetails = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToList();
-            if (queryDetails == null)
+            //var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName =  ('Amazon')").ToArray();
+            var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToArray();
+            //var queryDetails = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToList();
+            //db.partners.Find(id);
+            //var partnerResult = new partner;
+            //partnerResult.PartnerName = testResult[1];
+            if (testResult == null || testResult.Count() == 0) 
             {
                 return HttpNotFound();
             }
-            return View(queryDetails);
+             return View(testResult[0]);
         }
 
         // GET: partners/Create
