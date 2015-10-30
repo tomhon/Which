@@ -72,15 +72,15 @@ namespace Which.Controllers
         //public virtual DbSqlQuery<TEntity> SqlQuery(string sql, params object[] parameters);
 
         // GET: partners/Query - pass Partner name to get TE & BE back
-        public ActionResult Query(string partnerName)
+        public ActionResult Query(string id)
         {
-            partnerName = "Amazon";
-            if (String.IsNullOrEmpty(partnerName))
+            //id = "Netflix";
+            if (String.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName =  ('Amazon')").ToArray();
-            var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToArray();
+            var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", id)).ToArray();
             //var queryDetails = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToList();
             //db.partners.Find(id);
             //var partnerResult = new partner;
