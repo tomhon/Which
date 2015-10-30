@@ -73,23 +73,19 @@ namespace Which.Controllers
 
         // GET: partners/Query - pass Partner name to get TE & BE back
         public ActionResult Query(string id)
+            //id is used as variable since it's defined to be the only variable name that can be used - need to investiaget why that is - something in global.asax ????
         {
-            //id = "Netflix";
             if (String.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName =  ('Amazon')").ToArray();
-            var testResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", id)).ToArray();
-            //var queryDetails = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", partnerName)).ToList();
-            //db.partners.Find(id);
-            //var partnerResult = new partner;
-            //partnerResult.PartnerName = testResult[1];
-            if (testResult == null || testResult.Count() == 0) 
+            var queryResult = db.partners.SqlQuery("SELECT * from dbo.partners WHERE PartnerName = @partnerName", new SqlParameter("@partnerName", id)).ToArray();
+
+            if (queryResult == null || queryResult.Count() == 0) 
             {
                 return HttpNotFound();
             }
-             return View(testResult[0]);
+             return View(queryResult[0]);
         }
 
         // GET: partners/Create
